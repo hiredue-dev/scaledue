@@ -29,6 +29,9 @@ src-tauri/target/
 # The browsers themselves live in the OS cache, but any project-local traces:
 playwright-report/
 test-results/
+# Rebuilt by scripts/bundle-browsers.js at bundle time; platform-specific
+# (~400 MB per platform). Never commit these.
+browser-bin/
 
 # ── Credentials — database/mailbox access. Never, ever commit. ─────────────────
 # Service-account key for Firestore (the document database for all scraped data).

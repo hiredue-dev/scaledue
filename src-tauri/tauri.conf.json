@@ -4,13 +4,14 @@
   "version": "0.1.0",
   "identifier": "com.hiredue.scaledue",
   "build": {
-    "frontendDist": "../ui"
+    "frontendDist": "../ui",
+    "beforeBundleCommand": "node scripts/bundle-browsers.js"
   },
   "app": {
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "ScaleDue \u2014 Creator Discovery",
+        "title": "ScaleDue — Creator Discovery",
         "width": 1280,
         "height": 860,
         "minWidth": 900,
@@ -26,6 +27,15 @@
   "bundle": {
     "active": true,
     "targets": "all",
+    "resources": {
+      "../browser-bin/camoufox/": "browser-bin/camoufox/",
+      "../browser-bin/playwright/": "browser-bin/playwright/",
+      "../runner/": "runner/",
+      "../browser/": "browser/",
+      "../instagram/": "instagram/",
+      "../scripts/": "scripts/",
+      "../utils/": "utils/"
+    },
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",

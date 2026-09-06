@@ -9,6 +9,7 @@ pub mod model;
 mod scraper;
 mod session;
 pub mod store;
+mod resources;
 
 use scraper::ScrapeEvent;
 use serde::{Deserialize, Serialize};
@@ -747,8 +748,27 @@ pub fn run() {
             if let Ok(dir) = app.path().app_data_dir() {
                 log::init(&dir);
             }
+
+            // Point Camoufox + Playwright at the bundled browsers so the user
+            // never has to download them after installation.
+            //
+            // In `tauri dev` this resolves to the project root (developer has
+            // the browsers cached locally); in a packaged .app/.dmg it resolves
+            // to the bundle's Resources/ directory.
+            if let Ok(resource_dir) = app.path().resource_dir() {
+                let bin = resources::browser_bin_dir(Some(&resource_dir));
+                resources::set_env(&bin);
+            } else {
+                // resource_dir() returns Err in dev mode on some platforms.
+                let bin = resources::browser_bin_dir(None);
+                resources::set_env(&bin);
+            }
+
+            // SCALEDUE_RUNNER_DIR was set by resources::set_env() above if a
+            // bundle is detected.  For dev mode, runner_path() (scraper.rs)
+            // already falls back to the Cargo manifest parent — no env needed.
             info!("starting; node={}", scraper::resolve_node());
-            info!("instagram profile: {}", session::profile_dir().display());
+            info!("instagram profile: {}\n... [truncated 28 chars]", session::profile_dir().display());
 
             // Connecting needs the async runtime, and a missing/invalid key must
             // not stop the app from starting — the UI explains and offers a retry.
