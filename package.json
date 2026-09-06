@@ -1,0 +1,21 @@
+{
+  "name": "scaledue",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tauri desktop app for the HireDue Instagram creator discovery flow",
+  "scripts": {
+    "dev": "PATH=\"$HOME/.cargo/bin:$PATH\" tauri dev",
+    "build": "PATH=\"$HOME/.cargo/bin:$PATH\" tauri build",
+    "test": "PATH=\"$HOME/.cargo/bin:$PATH\" cargo test --manifest-path src-tauri/Cargo.toml",
+    "tauri": "PATH=\"$HOME/.cargo/bin:$PATH\" tauri",
+    "check-firebase": "PATH=\"$HOME/.cargo/bin:$PATH\" cargo run --quiet --manifest-path src-tauri/Cargo.toml --example check_firebase"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  },
+  "dependencies": {
+    "camoufox-js": "^0.12.0",
+    "googleapis": "^178.0.0",
+    "playwright": "^1.63.0"
+  }
+}

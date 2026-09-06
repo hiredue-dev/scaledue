@@ -1,0 +1,38 @@
+[package]
+name = "scaledue"
+version = "0.1.0"
+description = "Instagram creator discovery for the HireDue creator program"
+authors = ["HireDue"]
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "scaledue_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+tauri-plugin-dialog = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = "0.4"
+firestore = "0.53"
+futures = "0.3.34"
+tokio = { version = "1.53.1", features = ["macros", "rt", "rt-multi-thread"] }
+rusqlite = { version = "0.40.2", features = ["bundled"] }
+rustls = "0.23"
+# Transitive (firestore → gcloud-sdk), pinned here only to enable a crypto
+# backend. Its defaults enable neither, so signing the service-account JWT
+# panics at the first Firestore call with "Could not automatically determine
+# the process-level CryptoProvider". aws_lc_rs is already in the tree via rustls.
+jsonwebtoken = { version = "11", features = ["aws_lc_rs"] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

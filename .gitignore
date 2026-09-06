@@ -1,0 +1,59 @@
+# ── Dependencies ───────────────────────────────────────────────────────────────
+node_modules/
+
+# ── Rust build output ─────────────────────────────────────────────────────────
+src-tauri/target/
+
+# ── macOS filesystem artefacts ─────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ── Editor / IDE ───────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Local run data and browser profiles ────────────────────────────────────────
+# Every scrape produces timestamped directories under .local/runs/.
+# Browser profiles live here too — they contain cookies, cache, and
+# a long-lived Instagram session that must never leave this machine.
+.local/
+
+# ── Playwright / Camoufox browser binaries ─────────────────────────────────────
+# Downloaded by `npx playwright install`; large (~400 MB per platform) and
+# platform-specific.
+# The browsers themselves live in the OS cache, but any project-local traces:
+playwright-report/
+test-results/
+
+# ── Credentials — database/mailbox access. Never, ever commit. ─────────────────
+# Service-account key for Firestore (the document database for all scraped data).
+firebase-service-account.json
+*-service-account.json
+
+# Google OAuth 2.0 client for Gmail sending (must stay out of version control).
+google-oauth-client.json
+client_secret*.json
+
+# OAuth refresh token — anyone with this file can send email as the connected
+# account without re-authenticating.
+.gmail-token.json
+
+# Environment file — holds GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET and any
+# other secrets developers or CI set per-machine.
+.env
+.env.local
+.env.*.local
+
+# ── Logs ───────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+
+# ── OS-generated noise ─────────────────────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+Desktop.ini

@@ -1,0 +1,15 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Core permissions for the main window. Without this file the frontend has NO permissions: custom invoke() commands still work (they are not ACL-gated), but core plugin calls such as event.listen are silently denied, so no backend events ever reach the UI.",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "opener:default",
+    "dialog:default",
+    "dialog:allow-confirm",
+    "dialog:allow-ask"
+  ]
+}

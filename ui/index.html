@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScaleDue — Creator Discovery</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark">SD</span>
+        <div>
+          <h1>ScaleDue</h1>
+          <p class="sub">Instagram creator discovery for the HireDue creator program</p>
+        </div>
+      </div>
+      <div class="stats" id="stats"></div>
+    </header>
+
+    <main>
+      <section class="panel" id="firebasePanel">
+        <div class="connect-row">
+          <div class="connect-info">
+            <span class="dot" id="fbDot"></span>
+            <div>
+              <div id="fbTitle">Checking Firestore…</div>
+              <div class="name" id="fbDetail"></div>
+            </div>
+          </div>
+          <div class="connect-actions">
+            <button class="ghost" id="fbRefresh" type="button">Reload from cloud</button>
+            <button class="ghost" id="fbRetry" type="button">Retry connection</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="connectPanel">
+        <div class="connect-row">
+          <div class="connect-info">
+            <span class="dot" id="connDot"></span>
+            <div>
+              <div id="connTitle">Checking Instagram session…</div>
+              <div class="name" id="connDetail"></div>
+            </div>
+          </div>
+          <div class="connect-actions">
+            <button class="primary" id="connectBtn" type="button">Connect Instagram</button>
+            <button class="danger" id="cancelConnectBtn" type="button" hidden>Cancel</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="gmailPanel">
+        <div class="connect-row">
+          <div class="connect-info">
+            <span class="dot" id="gmDot"></span>
+            <div>
+              <div id="gmTitle">Checking Gmail…</div>
+              <div class="name" id="gmDetail"></div>
+            </div>
+          </div>
+          <div class="connect-actions">
+            <button class="primary" id="gmConnectBtn" type="button">Connect Gmail</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="configPanel">
+        <div class="panel-head">
+          <h2>Run a scrape</h2>
+          <button class="ghost" id="toggleConfig" type="button">Hide</button>
+        </div>
+
+        <div class="panel-body" id="configBody">
+          <label class="field wide">
+            <span>Keywords <em>one per line</em></span>
+            <textarea id="keywords" rows="5" spellcheck="false">job search tips
+career advice
+resume tips
+interview tips</textarea>
+          </label>
+
+          <div class="grid">
+            <label class="field">
+              <span>Min followers</span>
+              <input id="minFollowers" type="number" value="2000" min="0" step="500" />
+            </label>
+            <label class="field">
+              <span>Max followers</span>
+              <input id="maxFollowers" type="number" value="1500000" min="0" step="10000" />
+            </label>
+            <label class="field">
+              <span>Profiles to resolve <em>target, not a cap</em></span>
+              <input id="maxEnrich" type="number" value="200" min="1" max="1000" step="25" />
+            </label>
+            <label class="field">
+              <span>Search pages / keyword</span>
+              <input id="maxPages" type="number" value="4" min="1" max="12" />
+            </label>
+          </div>
+
+          <div class="toggles">
+            <label class="check">
+              <input id="requireRelevance" type="checkbox" checked />
+              <span>Only keep on-topic creators</span>
+            </label>
+            <label class="check">
+              <input id="headless" type="checkbox" checked />
+              <span>Headless browser</span>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="primary" id="runBtn" type="button">Run scrape</button>
+            <button class="danger" id="cancelBtn" type="button" hidden>Cancel</button>
+            <span class="status" id="status">Idle</span>
+          </div>
+          <p class="hint" id="hint">
+            Needs a connected Instagram session — use <strong>Connect Instagram</strong> above.
+            The run keeps searching and resolving until it hits the target, so a
+            higher number simply takes longer.
+          </p>
+        </div>
+      </section>
+
+      <section class="panel" id="logPanel" hidden>
+        <div class="panel-head">
+          <h2>Live log</h2>
+          <button class="ghost" id="clearLog" type="button">Clear</button>
+        </div>
+        <pre class="console" id="log"></pre>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Creators</h2>
+          <div class="toolbar">
+            <select id="runFilter"></select>
+            <label class="check compact"><input id="qualifiedOnly" type="checkbox" /><span>Leads only</span></label>
+            <input id="search" type="search" placeholder="Search name, handle, bio…" />
+            <span class="count" id="rowCount"></span>
+            <button class="ghost" id="exportBtn" type="button">Export CSV</button>
+            <button class="danger" id="deleteSelectedBtn" type="button" hidden>Delete selected</button>
+            <button class="ghost danger-ghost" id="deleteUnresolvedBtn" type="button">Delete unresolved</button>
+            <button class="ghost danger-ghost" id="deleteAllBtn" type="button">Delete all</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="table">
+            <thead>
+              <tr>
+                <th class="pick"><input id="selectAll" type="checkbox" title="Select all shown" /></th>
+                <th class="num">#</th>
+                <th>Creator</th>
+                <th>Profile</th>
+                <th class="num">Followers</th>
+                <th class="num">Score</th>
+                <th class="num">Reels</th>
+                <th class="num">Avg plays</th>
+                <th>Contact</th>
+                <th>Bio</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+          <p class="empty" id="empty">No creators yet — run a scrape to populate the database.</p>
+        </div>
+      </section>
+    </main>
+
+    <aside class="drawer" id="drawer" hidden>
+      <div class="drawer-head">
+        <div id="drawerTitle"></div>
+        <button class="ghost" id="closeDrawer" type="button">Close</button>
+      </div>
+      <div class="drawer-body" id="drawerBody"></div>
+    </aside>
+
+    <footer class="footer"><span id="dbPath"></span></footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
